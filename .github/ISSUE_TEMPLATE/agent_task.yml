@@ -1,0 +1,145 @@
+name: Agent Task
+description: Create a task for Copilot or AI agents to work on
+title: "[Agent Task]: "
+labels: ["agent", "task"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This template is for creating tasks specifically designed for GitHub Copilot agents or other AI coding assistants.
+        
+        Provide clear, scoped instructions that an agent can follow autonomously.
+
+  - type: textarea
+    id: objective
+    attributes:
+      label: Task Objective
+      description: What should the agent accomplish?
+      placeholder: A clear, specific goal for the agent. Ex. "Implement authentication middleware" or "Refactor utility functions to TypeScript"
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Background information the agent needs to understand the task
+      placeholder: |
+        - Related files: src/auth.js, src/middleware/
+        - Dependencies: express, jsonwebtoken
+        - Architecture: Uses JWT tokens for authentication
+        - Constraints: Must be backward compatible
+    validations:
+      required: true
+
+  - type: textarea
+    id: requirements
+    attributes:
+      label: Requirements
+      description: Specific requirements and acceptance criteria
+      placeholder: |
+        - [ ] Validate JWT tokens on protected routes
+        - [ ] Return 401 for invalid tokens
+        - [ ] Support token refresh
+        - [ ] Add tests with 90%+ coverage
+        - [ ] Update documentation
+    validations:
+      required: true
+
+  - type: textarea
+    id: files
+    attributes:
+      label: Relevant Files
+      description: Files the agent should reference or modify
+      placeholder: |
+        - src/middleware/auth.js (create)
+        - src/routes/api.js (modify)
+        - tests/auth.test.js (create)
+        - docs/authentication.md (update)
+    validations:
+      required: false
+
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: Complexity
+      description: Estimated complexity level
+      options:
+        - Low - Simple, well-defined task
+        - Medium - Requires some design decisions
+        - High - Complex, may need iteration
+    validations:
+      required: true
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: Task Type
+      description: What kind of work is this?
+      options:
+        - New feature implementation
+        - Refactoring
+        - Bug fix
+        - Testing
+        - Documentation
+        - Performance optimization
+        - Code cleanup
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints and Guidelines
+      description: What should the agent be aware of or avoid?
+      placeholder: |
+        - Follow existing code style in the repository
+        - Don't modify database schema
+        - Preserve backward compatibility
+        - Use existing error handling patterns
+    validations:
+      required: false
+
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: Links to documentation, examples, or related issues
+      placeholder: |
+        - Similar implementation: https://github.com/example/repo
+        - Documentation: https://docs.example.com/auth
+        - Related issue: #123
+    validations:
+      required: false
+
+  - type: textarea
+    id: success
+    attributes:
+      label: Definition of Done
+      description: How will we know the task is complete?
+      placeholder: |
+        - All requirements implemented
+        - Tests passing with adequate coverage
+        - Code passes linting
+        - Documentation updated
+        - PR ready for review
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-task Checklist
+      description: Ensure these are in place before assigning to agent
+      options:
+        - label: Task is clearly scoped and specific
+          required: true
+        - label: Required context and files are identified
+          required: true
+        - label: Agent has access to necessary permissions
+          required: false
+        - label: Expected output is well-defined
+          required: true

@@ -1,0 +1,270 @@
+# Copilot Setup Steps for Spectral Clip Forge
+#
+# This file defines the development environment setup steps that GitHub Copilot
+# agents should execute before starting work. It ensures the agent has all
+# necessary dependencies, tools, and configurations to successfully build,
+# lint, and test the project.
+#
+# Usage:
+#   - Copilot agents will reference this file to prepare their environment
+#   - CI/CD workflows can also use these steps for consistency
+#   - Developers can use this as a guide for local setup
+
+version: "1.0"
+
+environment:
+  # Operating system compatibility
+  os:
+    - ubuntu-latest
+    - macos-latest
+    - windows-latest
+  
+  # Required environment variables (no values - set externally)
+  env_vars:
+    - NODE_ENV
+    - CI
+  
+  # Paths to add to PATH environment variable
+  paths:
+    - ./node_modules/.bin
+    - ./bin
+    - ~/.local/bin
+
+setup_steps:
+  # Step 1: System Dependencies
+  - name: "Install System Dependencies"
+    description: "Install required system packages and tools"
+    platform:
+      linux:
+        - command: "sudo apt-get update -y"
+          description: "Update package lists"
+        - command: "sudo apt-get install -y build-essential curl git"
+          description: "Install build tools"
+      macos:
+        - command: "brew update || true"
+          description: "Update Homebrew"
+        - command: "brew install git curl || true"
+          description: "Install basic tools"
+      windows:
+        - command: "choco install git curl -y"
+          description: "Install basic tools via Chocolatey"
+    required: true
+  
+  # Step 2: Node.js Environment (if JavaScript/TypeScript project)
+  - name: "Setup Node.js"
+    description: "Install and configure Node.js runtime"
+    version_check:
+      command: "node --version"
+      expected: "v18.x or v20.x"
+    steps:
+      - command: "node --version || echo 'Node.js not installed'"
+        description: "Check Node.js version"
+      - command: "npm --version || echo 'npm not installed'"
+        description: "Check npm version"
+    required: false
+    skip_if_exists: true
+  
+  # Step 3: Python Environment (if Python project)
+  - name: "Setup Python"
+    description: "Install and configure Python runtime"
+    version_check:
+      command: "python --version || python3 --version"
+      expected: "Python 3.8+"
+    steps:
+      - command: "python3 --version || python --version"
+        description: "Check Python version"
+      - command: "pip3 --version || pip --version"
+        description: "Check pip version"
+    required: false
+    skip_if_exists: true
+  
+  # Step 4: Install Project Dependencies
+  - name: "Install Dependencies"
+    description: "Install all project dependencies based on package managers"
+    steps:
+      # Node.js dependencies
+      - condition: "file_exists('package.json')"
+        command: "npm ci || npm install"
+        description: "Install Node.js dependencies"
+        cache_key: "node-modules-{{ checksum('package-lock.json') }}"
+        cache_paths:
+          - node_modules
+      
+      # Python dependencies
+      - condition: "file_exists('requirements.txt')"
+        command: "pip3 install -r requirements.txt || pip install -r requirements.txt"
+        description: "Install Python dependencies"
+        cache_key: "python-deps-{{ checksum('requirements.txt') }}"
+        cache_paths:
+          - ~/.cache/pip
+      
+      # Python Poetry
+      - condition: "file_exists('pyproject.toml') && file_exists('poetry.lock')"
+        command: "pip3 install poetry && poetry install"
+        description: "Install Poetry dependencies"
+        cache_key: "poetry-{{ checksum('poetry.lock') }}"
+        cache_paths:
+          - ~/.cache/pypoetry
+      
+      # Go dependencies
+      - condition: "file_exists('go.mod')"
+        command: "go mod download"
+        description: "Download Go modules"
+        cache_key: "go-{{ checksum('go.sum') }}"
+        cache_paths:
+          - ~/go/pkg/mod
+      
+      # Ruby dependencies
+      - condition: "file_exists('Gemfile')"
+        command: "bundle install"
+        description: "Install Ruby gems"
+        cache_key: "bundler-{{ checksum('Gemfile.lock') }}"
+        cache_paths:
+          - vendor/bundle
+    required: true
+  
+  # Step 5: Setup Development Tools
+  - name: "Install Development Tools"
+    description: "Install linters, formatters, and other development tools"
+    steps:
+      # ESLint for JavaScript/TypeScript
+      - condition: "file_exists('package.json')"
+        command: "npm install --save-dev eslint prettier || true"
+        description: "Ensure ESLint and Prettier are available"
+      
+      # Python linters
+      - condition: "file_exists('requirements.txt') || file_exists('pyproject.toml')"
+        command: "pip3 install --upgrade black flake8 pylint mypy || pip install --upgrade black flake8 pylint mypy || true"
+        description: "Install Python linting tools"
+      
+      # EditorConfig
+      - command: "test -f .editorconfig && echo 'EditorConfig found' || echo 'No EditorConfig'"
+        description: "Check for EditorConfig"
+    required: false
+  
+  # Step 6: Verify Installation
+  - name: "Verify Environment"
+    description: "Run checks to ensure environment is correctly configured"
+    steps:
+      - command: "git --version"
+        description: "Verify Git installation"
+        required: true
+      
+      - condition: "file_exists('package.json')"
+        command: "node --version && npm --version"
+        description: "Verify Node.js and npm"
+      
+      - condition: "file_exists('requirements.txt') || file_exists('pyproject.toml')"
+        command: "python3 --version || python --version"
+        description: "Verify Python"
+    required: true
+
+  # Step 7: Build Project
+  - name: "Build Project"
+    description: "Compile/build the project to verify environment is complete"
+    steps:
+      - condition: "npm_script_exists('build')"
+        command: "npm run build"
+        description: "Build Node.js project"
+        timeout: 300
+      
+      - condition: "file_exists('Makefile')"
+        command: "make build || make all || echo 'No build target'"
+        description: "Build using Makefile"
+        timeout: 300
+      
+      - condition: "file_exists('setup.py')"
+        command: "python3 setup.py build || python setup.py build || echo 'No setup.py build'"
+        description: "Build Python package"
+        timeout: 300
+    required: false
+    continue_on_error: true
+
+  # Step 8: Run Linters
+  - name: "Run Linters"
+    description: "Execute linting to check code quality and identify issues"
+    steps:
+      - condition: "npm_script_exists('lint')"
+        command: "npm run lint"
+        description: "Lint JavaScript/TypeScript code"
+        continue_on_error: true
+      
+      - condition: "file_exists('.eslintrc.js') || file_exists('.eslintrc.json') || file_exists('.eslintrc.yml')"
+        command: "npx eslint . || echo 'ESLint check completed with warnings'"
+        description: "Run ESLint"
+        continue_on_error: true
+      
+      - condition: "file_exists('setup.py') || file_exists('pyproject.toml')"
+        command: "black --check . || flake8 . || echo 'Python linting completed'"
+        description: "Lint Python code"
+        continue_on_error: true
+    required: false
+
+  # Step 9: Run Tests
+  - name: "Run Tests"
+    description: "Execute test suite to verify environment and code correctness"
+    steps:
+      - condition: "npm_script_exists('test')"
+        command: "npm run test"
+        description: "Run Node.js tests"
+        timeout: 600
+        continue_on_error: true
+      
+      - condition: "file_exists('pytest.ini') || file_exists('setup.py')"
+        command: "pytest || python -m pytest || echo 'No tests found'"
+        description: "Run Python tests"
+        timeout: 600
+        continue_on_error: true
+      
+      - condition: "file_exists('go.mod')"
+        command: "go test ./..."
+        description: "Run Go tests"
+        timeout: 600
+        continue_on_error: true
+    required: false
+
+post_setup:
+  # Actions to perform after setup is complete
+  - name: "Cache Summary"
+    description: "Display cache information for future runs"
+    command: "echo 'Setup complete. Dependencies cached for faster subsequent runs.'"
+  
+  - name: "Environment Report"
+    description: "Generate environment report"
+    command: |
+      echo '=== Environment Setup Complete ==='
+      echo "Node version: $(node --version 2>/dev/null || echo 'N/A')"
+      echo "npm version: $(npm --version 2>/dev/null || echo 'N/A')"
+      echo "Python version: $(python3 --version 2>/dev/null || python --version 2>/dev/null || echo 'N/A')"
+      echo "Git version: $(git --version)"
+      echo '================================='
+
+# Troubleshooting guide for common issues
+troubleshooting:
+  - issue: "Command not found errors"
+    solution: "Ensure PATH includes necessary directories. Check environment.paths section."
+  
+  - issue: "Permission denied errors"
+    solution: "Some commands may require sudo/admin privileges. Check user permissions."
+  
+  - issue: "Dependency installation fails"
+    solution: "Check network connectivity. Verify package manager is up-to-date. Clear cache and retry."
+  
+  - issue: "Build failures"
+    solution: "Ensure all dependencies installed. Check for version compatibility. Review error logs."
+  
+  - issue: "Test failures"
+    solution: "This may indicate existing issues in codebase. Review test output. Not blocking for setup."
+
+# Notes for Copilot Agents
+agent_notes:
+  - "Execute steps in order; some steps depend on previous ones"
+  - "Cache dependencies when possible to speed up subsequent runs"
+  - "Continue on test/lint errors during setup - these may be pre-existing issues"
+  - "Skip steps with 'required: false' if they don't apply to current project"
+  - "Check 'condition' fields before executing conditional steps"
+  - "Respect timeout values to prevent hanging on long operations"
+  - "Report any setup failures clearly so they can be addressed"
+  - "After setup, you should be able to run lint, test, and build commands"
+  - "Refer to .github/copilot-instructions.md for coding guidelines"
+  - "Use CI/CD workflows (.github/workflows/) as reference for standard commands"

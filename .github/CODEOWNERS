@@ -1,0 +1,67 @@
+# CODEOWNERS for Spectral Clip Forge
+#
+# This file defines code ownership for automatic review requests.
+# Order is important; the last matching pattern takes precedence.
+#
+# Documentation: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owners for everything in the repo
+# These owners will be requested for review when someone opens a PR
+*       @Spectral-Flow/maintainers
+
+# GitHub-specific configurations
+/.github/                           @Spectral-Flow/maintainers @Spectral-Flow/devops
+/.github/workflows/                 @Spectral-Flow/devops
+/.github/copilot-instructions.md    @Spectral-Flow/maintainers
+/.github/copilot-setup-steps.yaml   @Spectral-Flow/maintainers @Spectral-Flow/devops
+
+# CI/CD and automation
+/.github/workflows/ci.yml           @Spectral-Flow/devops
+/.github/dependabot.yml             @Spectral-Flow/devops
+
+# Documentation
+/docs/                              @Spectral-Flow/maintainers @Spectral-Flow/docs
+README.md                           @Spectral-Flow/maintainers
+CONTRIBUTING.md                     @Spectral-Flow/maintainers
+LICENSE                             @Spectral-Flow/maintainers
+
+# Source code - JavaScript/TypeScript
+/src/**/*.js                        @Spectral-Flow/frontend-team
+/src/**/*.ts                        @Spectral-Flow/frontend-team
+/src/**/*.jsx                       @Spectral-Flow/frontend-team
+/src/**/*.tsx                       @Spectral-Flow/frontend-team
+
+# Source code - Python
+/src/**/*.py                        @Spectral-Flow/backend-team
+
+# Tests
+/tests/                             @Spectral-Flow/maintainers
+/test/                              @Spectral-Flow/maintainers
+**/*.test.js                        @Spectral-Flow/maintainers
+**/*.test.ts                        @Spectral-Flow/maintainers
+**/*.spec.js                        @Spectral-Flow/maintainers
+**/*.spec.ts                        @Spectral-Flow/maintainers
+**/test_*.py                        @Spectral-Flow/maintainers
+
+# Configuration files
+package.json                        @Spectral-Flow/maintainers @Spectral-Flow/devops
+package-lock.json                   @Spectral-Flow/devops
+requirements.txt                    @Spectral-Flow/backend-team @Spectral-Flow/devops
+pyproject.toml                      @Spectral-Flow/backend-team @Spectral-Flow/devops
+poetry.lock                         @Spectral-Flow/devops
+tsconfig.json                       @Spectral-Flow/frontend-team
+.eslintrc.*                         @Spectral-Flow/frontend-team
+.prettierrc.*                       @Spectral-Flow/frontend-team
+
+# Docker
+Dockerfile                          @Spectral-Flow/devops
+docker-compose.yml                  @Spectral-Flow/devops
+.dockerignore                       @Spectral-Flow/devops
+
+# Security
+SECURITY.md                         @Spectral-Flow/security-team
+/.github/dependabot.yml             @Spectral-Flow/security-team @Spectral-Flow/devops
+
+# Build and deployment
+/build/                             @Spectral-Flow/devops
+/dist/                              @Spectral-Flow/devops
