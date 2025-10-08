@@ -1,0 +1,72 @@
+# CODEOWNERS for Spectral Clip Forge
+# 
+# This file defines code ownership for automated review requests.
+# When a PR is opened, GitHub will automatically request reviews from
+# the owners of the modified files.
+#
+# Format: path/to/files @owner1 @owner2
+# More specific patterns take precedence over less specific ones.
+
+# Default owners for everything in the repo
+* @Spectral-Flow/maintainers
+
+# GitHub configuration and workflows
+/.github/ @Spectral-Flow/devops @Spectral-Flow/maintainers
+/.github/workflows/ @Spectral-Flow/devops
+/.github/copilot-instructions.md @Spectral-Flow/maintainers
+/.github/copilot-setup-steps.yaml @Spectral-Flow/devops
+
+# Backend code
+/backend/ @Spectral-Flow/backend-team
+/backend/api/ @Spectral-Flow/backend-team
+/backend/processing/ @Spectral-Flow/backend-team @Spectral-Flow/video-experts
+/backend/security/ @Spectral-Flow/backend-team @Spectral-Flow/security-team
+/backend/tests/ @Spectral-Flow/backend-team
+
+# Frontend code
+/frontend/ @Spectral-Flow/frontend-team
+/frontend/src/components/ @Spectral-Flow/frontend-team
+/frontend/src/services/ @Spectral-Flow/frontend-team
+/frontend/src/styles/ @Spectral-Flow/frontend-team @Spectral-Flow/design-team
+
+# Docker and deployment
+/docker/ @Spectral-Flow/devops
+/docker-compose*.yml @Spectral-Flow/devops
+Dockerfile @Spectral-Flow/devops
+/.dockerignore @Spectral-Flow/devops
+
+# Documentation
+/docs/ @Spectral-Flow/maintainers @Spectral-Flow/tech-writers
+README.md @Spectral-Flow/maintainers @Spectral-Flow/tech-writers
+CONTRIBUTING.md @Spectral-Flow/maintainers
+CODE_OF_CONDUCT.md @Spectral-Flow/maintainers
+
+# Configuration files
+*.yml @Spectral-Flow/devops
+*.yaml @Spectral-Flow/devops
+*.json @Spectral-Flow/maintainers
+.gitignore @Spectral-Flow/maintainers
+.env.example @Spectral-Flow/devops @Spectral-Flow/backend-team
+
+# Dependencies
+/backend/requirements*.txt @Spectral-Flow/backend-team
+/frontend/package.json @Spectral-Flow/frontend-team
+/frontend/package-lock.json @Spectral-Flow/frontend-team
+
+# Security-sensitive files
+/backend/security/ @Spectral-Flow/security-team @Spectral-Flow/maintainers
+**/auth*.py @Spectral-Flow/security-team
+**/security*.py @Spectral-Flow/security-team
+
+# Legal and licensing
+LICENSE @Spectral-Flow/maintainers
+TERMS_OF_SERVICE.md @Spectral-Flow/maintainers @Spectral-Flow/legal
+
+# Scripts
+/scripts/ @Spectral-Flow/devops
+*.sh @Spectral-Flow/devops
+
+# Tests require review from relevant team
+/backend/tests/ @Spectral-Flow/backend-team
+/frontend/src/**/*.test.* @Spectral-Flow/frontend-team
+/frontend/src/**/*.spec.* @Spectral-Flow/frontend-team

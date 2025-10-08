@@ -1,0 +1,234 @@
+# Copilot Setup Steps for Spectral Clip Forge
+# This file defines the development environment setup for GitHub Copilot agents
+# ensuring they can lint, test, and build the project before making code changes.
+
+name: Copilot Development Environment Setup
+description: |
+  Setup steps for Copilot agents working on Spectral Clip Forge.
+  This ensures the agent has all necessary tools, dependencies, and configurations
+  to work effectively on the codebase.
+
+steps:
+  - name: System Prerequisites
+    description: Install system-level dependencies
+    commands:
+      - sudo apt-get update
+      - sudo apt-get install -y python3 python3-pip python3-venv
+      - sudo apt-get install -y nodejs npm
+      - sudo apt-get install -y ffmpeg
+      - sudo apt-get install -y clamav clamav-daemon
+      - sudo apt-get install -y git curl wget
+    validation:
+      - python3 --version
+      - node --version
+      - npm --version
+      - ffmpeg -version
+      - clamscan --version
+
+  - name: Python Environment Setup
+    description: Create and activate Python virtual environment
+    commands:
+      - python3 -m venv venv
+      - source venv/bin/activate
+      - pip install --upgrade pip setuptools wheel
+    validation:
+      - which python
+      - pip --version
+
+  - name: Python Development Tools
+    description: Install Python linting and testing tools
+    commands:
+      - pip install black flake8 mypy pytest pytest-cov pytest-asyncio
+      - pip install pip-audit safety
+    validation:
+      - black --version
+      - flake8 --version
+      - mypy --version
+      - pytest --version
+
+  - name: Backend Dependencies
+    description: Install Python backend dependencies
+    working_directory: backend
+    commands:
+      - pip install -r requirements.txt || echo "requirements.txt not found, skipping"
+      - pip install -r requirements-dev.txt || echo "requirements-dev.txt not found, skipping"
+    validation:
+      - pip list
+
+  - name: Node.js Development Tools
+    description: Install Node.js development tools globally
+    commands:
+      - npm install -g npm@latest
+      - npm install -g eslint prettier typescript
+      - npm install -g @playwright/test
+    validation:
+      - npm --version
+      - eslint --version
+      - prettier --version
+      - tsc --version
+
+  - name: Frontend Dependencies
+    description: Install frontend dependencies
+    working_directory: frontend
+    commands:
+      - npm install || echo "package.json not found, skipping"
+      - npm run build || echo "Build script not available"
+    validation:
+      - npm list --depth=0 || true
+
+  - name: Docker Setup
+    description: Ensure Docker is available for containerized processing
+    commands:
+      - docker --version || echo "Docker not available, install if needed"
+      - docker-compose --version || echo "Docker Compose not available"
+    validation:
+      - docker ps || echo "Docker daemon not running"
+
+  - name: Environment Configuration
+    description: Set up environment variables and configuration files
+    commands:
+      - cp .env.example .env || echo "No .env.example found"
+      - mkdir -p storage/uploads storage/temp storage/output
+      - mkdir -p logs
+    validation:
+      - test -d storage || echo "Storage directory not created"
+      - test -d logs || echo "Logs directory not created"
+
+  - name: ClamAV Setup
+    description: Initialize ClamAV antivirus database
+    commands:
+      - sudo freshclam || echo "ClamAV database update failed, continuing"
+      - sudo systemctl start clamav-daemon || echo "ClamAV daemon not started"
+    validation:
+      - clamscan --version
+
+  - name: Git Configuration
+    description: Configure git for the project
+    commands:
+      - git config --local core.autocrlf input
+      - git config --local pull.rebase false
+    validation:
+      - git config --list --local
+
+  - name: Pre-commit Hooks
+    description: Install pre-commit hooks for code quality
+    commands:
+      - pip install pre-commit || echo "pre-commit not in requirements"
+      - pre-commit install || echo "No .pre-commit-config.yaml found"
+    validation:
+      - pre-commit --version || true
+
+# Linting Commands
+# These commands should be run before committing code
+lint:
+  python:
+    - name: Format Python code
+      command: black backend/ --check
+    - name: Lint Python code
+      command: flake8 backend/ --max-line-length=100
+    - name: Type check Python code
+      command: mypy backend/ --ignore-missing-imports
+  
+  javascript:
+    - name: Lint JavaScript/TypeScript
+      command: cd frontend && npm run lint
+      working_directory: frontend
+    - name: Format JavaScript/TypeScript
+      command: cd frontend && npm run format:check
+      working_directory: frontend
+
+# Testing Commands
+# These commands should be run to validate code changes
+test:
+  python:
+    - name: Run Python unit tests
+      command: pytest backend/tests/ -v --cov=backend --cov-report=term-missing
+    - name: Run Python integration tests
+      command: pytest backend/tests/integration/ -v
+      
+  javascript:
+    - name: Run frontend unit tests
+      command: cd frontend && npm test
+      working_directory: frontend
+    - name: Run E2E tests
+      command: cd frontend && npm run test:e2e
+      working_directory: frontend
+
+# Build Commands
+# These commands build the project for deployment
+build:
+  backend:
+    - name: Build backend Docker image
+      command: docker build -t spectral-clip-forge-backend -f docker/backend.Dockerfile .
+      
+  frontend:
+    - name: Build frontend for production
+      command: cd frontend && npm run build
+      working_directory: frontend
+      
+  full:
+    - name: Build all services with Docker Compose
+      command: docker-compose build
+
+# Environment Variables Required
+# These must be set before running the application
+required_env_vars:
+  - SECRET_KEY
+  - STORAGE_PATH
+  - MAX_FILE_SIZE
+  - CLAMAV_HOST
+  
+# Optional Environment Variables
+optional_env_vars:
+  - DATABASE_URL
+  - REDIS_URL
+  - AWS_ACCESS_KEY_ID
+  - AWS_SECRET_ACCESS_KEY
+  - SENTRY_DSN
+
+# Known Issues and Constraints
+constraints:
+  - No secrets should ever be committed to the repository
+  - All file processing must happen in isolated Docker containers
+  - FFmpeg must be available on the system or in containers
+  - ClamAV should be running for malware scanning (can be mocked in dev)
+  - Minimum Python version: 3.9
+  - Minimum Node.js version: 16.x
+  - Recommended RAM: 4GB minimum for video processing
+  - Disk space: At least 10GB free for temporary processing files
+
+# Quick Start for Copilot Agents
+quick_start:
+  description: Minimal steps to get started
+  commands:
+    - git clone https://github.com/Spectral-Flow/Spectral-Clip-Forge.git
+    - cd Spectral-Clip-Forge
+    - python3 -m venv venv && source venv/bin/activate
+    - pip install -r backend/requirements.txt || echo "Backend dependencies pending"
+    - cd frontend && npm install || echo "Frontend dependencies pending"
+    - cd .. && docker-compose up -d || echo "Docker setup pending"
+
+# Troubleshooting
+troubleshooting:
+  - issue: Python dependencies fail to install
+    solution: Ensure Python 3.9+ is installed and venv is activated
+    
+  - issue: FFmpeg not found
+    solution: Install FFmpeg using package manager (apt-get, brew, etc.)
+    
+  - issue: ClamAV fails to start
+    solution: Run 'sudo freshclam' to update virus database, then restart daemon
+    
+  - issue: Docker permission denied
+    solution: Add user to docker group or use sudo for docker commands
+    
+  - issue: Node.js version too old
+    solution: Install Node.js 16.x or higher using nvm or package manager
+
+# Additional Resources
+resources:
+  - Copilot Instructions: .github/copilot-instructions.md
+  - Contributing Guide: CONTRIBUTING.md
+  - API Documentation: docs/api.md
+  - Architecture Overview: docs/architecture.md
+  - Eternis-33 Lore: https://github.com/Spectral-Flow/Eternis-33-Bible
