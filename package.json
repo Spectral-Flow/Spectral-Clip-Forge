@@ -1,0 +1,25 @@
+{
+  "name": "spectral-clip-forge",
+  "version": "1.0.0",
+  "description": "Spectral Flow's legendary clip generation forge - transform your media into viral-ready content",
+  "scripts": {
+    "lint": "eslint frontend/src --ext .js,.jsx",
+    "format": "prettier --write 'frontend/src/**/*.{js,jsx,css}'",
+    "test": "jest"
+  },
+  "keywords": [
+    "video",
+    "audio",
+    "clip",
+    "spectral-flow",
+    "eternis-33",
+    "social-media"
+  ],
+  "author": "Spectral Flow Team",
+  "license": "AGPL-3.0",
+  "devDependencies": {
+    "eslint": "^8.50.0",
+    "prettier": "^3.0.3",
+    "jest": "^29.7.0"
+  }
+}

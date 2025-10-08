@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spectral Clip Forge - Transform Your Media into Legendary Artifacts</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+</head>
+<body class="forge-body">
+    <!-- Header -->
+    <header class="forge-header">
+        <div class="container">
+            <div class="logo">
+                <h1>⚡ SPECTRAL CLIP FORGE ⚡</h1>
+                <p class="tagline">Transform Your Media into Legendary Artifacts</p>
+            </div>
+            <nav>
+                <a href="/" class="nav-link">Forge</a>
+                <a href="/dashboard/contributors" class="nav-link">Contributors</a>
+                <a href="/dashboard" class="nav-link">Dashboard</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h2 class="hero-title">Welcome to the Gates of the Forge</h2>
+            <p class="hero-text">
+                Within the depths of the Eternis-33 universe lies the Spectral Clip Forge,
+                a legendary artifact capable of transmuting ordinary media into viral-ready
+                social content. Upload your raw footage and witness its transformation through
+                the purple flames of creation.
+            </p>
+        </div>
+    </section>
+
+    <!-- Upload Section -->
+    <section class="upload-section">
+        <div class="container">
+            <div class="upload-card">
+                <h3 class="section-title">⚔️ Begin the Forging Ritual ⚔️</h3>
+                
+                <div id="upload-zone" class="upload-zone">
+                    <div class="upload-icon">📁</div>
+                    <p class="upload-text">Drag & Drop your media artifact here</p>
+                    <p class="upload-hint">or click to select a file</p>
+                    <input type="file" id="file-input" accept="video/*,audio/*" style="display: none;">
+                    <p class="upload-info">Supported: MP4, MOV, AVI, MKV, MP3, WAV, FLAC (Max 500MB)</p>
+                </div>
+
+                <div id="file-info" class="file-info" style="display: none;">
+                    <p><strong>Selected File:</strong> <span id="filename"></span></p>
+                    <p><strong>Size:</strong> <span id="filesize"></span></p>
+                </div>
+
+                <!-- Format Selection -->
+                <div class="format-selection">
+                    <h4>Choose Your Destiny (Target Platforms):</h4>
+                    <div class="format-options">
+                        <label class="format-option">
+                            <input type="checkbox" name="format" value="tiktok" checked>
+                            <span>TikTok (720×1280)</span>
+                        </label>
+                        <label class="format-option">
+                            <input type="checkbox" name="format" value="shorts" checked>
+                            <span>YouTube Shorts (1080×1920)</span>
+                        </label>
+                        <label class="format-option">
+                            <input type="checkbox" name="format" value="reels" checked>
+                            <span>Instagram Reels (1080×1920)</span>
+                        </label>
+                        <label class="format-option">
+                            <input type="checkbox" name="format" value="square">
+                            <span>Square (1080×1080)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Effects Options -->
+                <div class="effects-selection">
+                    <h4>Spectral Enhancements:</h4>
+                    <div class="effects-options">
+                        <label class="effect-option">
+                            <input type="checkbox" name="watermark" checked>
+                            <span>🔮 Spectral Watermark</span>
+                        </label>
+                        <label class="effect-option">
+                            <input type="radio" name="effects" value="spectral" checked>
+                            <span>💜 Neon/Purple Effect</span>
+                        </label>
+                        <label class="effect-option">
+                            <input type="radio" name="effects" value="tribal">
+                            <span>⚡ Tribal Vibrance</span>
+                        </label>
+                        <label class="effect-option">
+                            <input type="radio" name="effects" value="none">
+                            <span>🎬 No Effects</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button id="upload-btn" class="forge-button" disabled>
+                    🔥 IGNITE THE FORGE 🔥
+                </button>
+
+                <div id="progress-section" class="progress-section" style="display: none;">
+                    <div class="progress-bar">
+                        <div id="progress-fill" class="progress-fill"></div>
+                    </div>
+                    <p id="progress-text" class="progress-text">Uploading...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Status Section -->
+    <section id="status-section" class="status-section" style="display: none;">
+        <div class="container">
+            <div class="status-card">
+                <h3>⚗️ Forging Status ⚗️</h3>
+                <div id="status-content"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="forge-footer">
+        <div class="container">
+            <p>&copy; 2024 Spectral Flow - Part of the Eternis-33 Universe</p>
+            <p>
+                <a href="/dashboard/contributors" class="footer-link">Contributors</a> |
+                <a href="https://github.com/Spectral-Flow" class="footer-link" target="_blank">GitHub</a> |
+                <a href="#" class="footer-link">Terms</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Spectral Clip Forge</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="forge-body">
+    <header class="forge-header">
+        <div class="container">
+            <div class="logo">
+                <h1>⚡ SPECTRAL CLIP FORGE ⚡</h1>
+            </div>
+            <nav>
+                <a href="/" class="nav-link">Forge</a>
+                <a href="/dashboard/contributors" class="nav-link">Contributors</a>
+                <a href="/dashboard" class="nav-link active">Dashboard</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="dashboard-section">
+        <div class="container">
+            <h2 class="section-title">📜 Hall of Forged Artifacts 📜</h2>
+            
+            {% if user %}
+            <div class="user-info">
+                <p>Welcome, <strong>{{ user.username }}</strong>!</p>
+            </div>
+            {% endif %}
+
+            <div class="jobs-list">
+                {% if jobs %}
+                    {% for job in jobs %}
+                    <div class="job-card status-{{ job.status }}">
+                        <div class="job-header">
+                            <h3>{{ job.filename }}</h3>
+                            <span class="job-status">{{ job.status }}</span>
+                        </div>
+                        <div class="job-details">
+                            <p><strong>Created:</strong> {{ job.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                            <p><strong>Formats:</strong> {{ ', '.join(job.get_target_formats()) }}</p>
+                            {% if job.status == 'completed' %}
+                            <div class="job-downloads">
+                                <a href="/api/download/{{ job.id }}/all" class="download-btn">Download All</a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <p>No artifacts have been forged yet.</p>
+                        <p><a href="/">Begin your first forging ritual</a></p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <footer class="forge-footer">
+        <div class="container">
+            <p>&copy; 2024 Spectral Flow - Part of the Eternis-33 Universe</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  # Redis for Celery task queue
+  redis:
+    image: redis:7-alpine
+    container_name: spectral-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - spectral-network
+
+  # Main Flask application
+  web:
+    build: .
+    container_name: spectral-web
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    env_file:
+      - .env
+    volumes:
+      - ./uploads:/app/uploads
+      - ./output:/app/output
+      - ./logs:/app/logs
+    depends_on:
+      - redis
+    restart: unless-stopped
+    networks:
+      - spectral-network
+
+  # Celery worker for background tasks
+  worker:
+    build: .
+    container_name: spectral-worker
+    command: celery -A celery_worker.celery worker --loglevel=info
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    env_file:
+      - .env
+    volumes:
+      - ./uploads:/app/uploads
+      - ./output:/app/output
+    depends_on:
+      - redis
+    restart: unless-stopped
+    networks:
+      - spectral-network
+
+volumes:
+  redis_data:
+
+networks:
+  spectral-network:
+    driver: bridge
