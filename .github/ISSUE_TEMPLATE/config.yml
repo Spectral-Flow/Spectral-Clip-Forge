@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📚 Documentation
+    url: https://github.com/Spectral-Flow/Spectral-Clip-Forge/wiki
+    about: Check the documentation for answers to common questions
+  - name: 💬 Discussions
+    url: https://github.com/Spectral-Flow/Spectral-Clip-Forge/discussions
+    about: Ask questions and discuss ideas with the community
+  - name: 🔒 Security Issues
+    url: https://github.com/Spectral-Flow/Spectral-Clip-Forge/security/advisories/new
+    about: Report security vulnerabilities privately
