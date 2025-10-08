@@ -1,0 +1,44 @@
+# Spectral Clip Forge - Python Dependencies
+
+# Web Framework
+Flask==2.3.3
+Flask-CORS==4.0.0
+Flask-Limiter==3.5.0
+Flask-SQLAlchemy==3.0.5
+Werkzeug==2.3.7
+
+# Task Queue
+celery==5.3.4
+redis==5.0.0
+
+# Video/Audio Processing
+ffmpeg-python==0.2.0
+
+# File Upload & Security
+python-magic==0.4.27
+clamd==1.0.2
+
+# Environment Management
+python-dotenv==1.0.0
+
+# OAuth (Optional)
+authlib==1.2.1
+requests==2.31.0
+
+# Database
+SQLAlchemy==2.0.21
+
+# Utilities
+pillow==10.0.1
+python-dateutil==2.8.2
+psutil==5.9.5
+
+# Testing
+pytest==7.4.2
+pytest-flask==1.2.0
+pytest-cov==4.1.0
+pytest-mock==3.11.1
+
+# Code Quality
+flake8==6.1.0
+black==23.9.1

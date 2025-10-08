@@ -1,0 +1,547 @@
+/* Spectral Clip Forge - Legendary Styling */
+
+/* CSS Variables for Spectral Flow Theme */
+:root {
+    --spectral-purple: #7B2CBF;
+    --spectral-purple-dark: #5A189A;
+    --spectral-purple-light: #9D4EDD;
+    --spectral-neon: #C77DFF;
+    --spectral-pink: #E0AAFF;
+    --tribal-orange: #FF6B35;
+    --tribal-gold: #FFD700;
+    --dark-bg: #0A0A0A;
+    --dark-card: #1A1A1A;
+    --text-primary: #FFFFFF;
+    --text-secondary: #B0B0B0;
+    --success: #10B981;
+    --error: #EF4444;
+    --warning: #F59E0B;
+}
+
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--dark-bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+.forge-body {
+    background: linear-gradient(135deg, #0A0A0A 0%, #1A0A2E 100%);
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header */
+.forge-header {
+    background: rgba(26, 26, 26, 0.9);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--spectral-purple);
+    padding: 20px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.forge-header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo h1 {
+    font-size: 1.8rem;
+    background: linear-gradient(90deg, var(--spectral-purple), var(--spectral-neon));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 5px;
+}
+
+.tagline {
+    font-size: 0.9rem;
+    color: var(--spectral-pink);
+    font-style: italic;
+}
+
+nav {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-link {
+    color: var(--text-primary);
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background: var(--spectral-purple);
+    color: white;
+}
+
+/* Hero Section */
+.hero {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.hero-title {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    background: linear-gradient(90deg, var(--spectral-neon), var(--tribal-gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-text {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.8;
+}
+
+/* Upload Section */
+.upload-section {
+    padding: 40px 20px;
+}
+
+.upload-card {
+    background: var(--dark-card);
+    border: 2px solid var(--spectral-purple-dark);
+    border-radius: 15px;
+    padding: 40px;
+    max-width: 800px;
+    margin: 0 auto;
+    box-shadow: 0 0 30px rgba(123, 44, 191, 0.3);
+}
+
+.section-title {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    color: var(--spectral-neon);
+}
+
+.upload-zone {
+    border: 3px dashed var(--spectral-purple);
+    border-radius: 10px;
+    padding: 60px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgba(123, 44, 191, 0.05);
+}
+
+.upload-zone:hover {
+    border-color: var(--spectral-neon);
+    background: rgba(123, 44, 191, 0.1);
+    transform: scale(1.02);
+}
+
+.upload-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+
+.upload-text {
+    font-size: 1.3rem;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+}
+
+.upload-hint {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.upload-info {
+    margin-top: 15px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.file-info {
+    background: rgba(123, 44, 191, 0.1);
+    border: 1px solid var(--spectral-purple);
+    border-radius: 8px;
+    padding: 15px;
+    margin: 20px 0;
+}
+
+/* Format Selection */
+.format-selection,
+.effects-selection {
+    margin: 30px 0;
+}
+
+.format-selection h4,
+.effects-selection h4 {
+    color: var(--spectral-pink);
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.format-options,
+.effects-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.format-option,
+.effect-option {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    background: rgba(123, 44, 191, 0.1);
+    border: 1px solid var(--spectral-purple-dark);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.format-option:hover,
+.effect-option:hover {
+    background: rgba(123, 44, 191, 0.2);
+    border-color: var(--spectral-purple);
+}
+
+.format-option input,
+.effect-option input {
+    margin-right: 10px;
+}
+
+/* Forge Button */
+.forge-button {
+    background: linear-gradient(90deg, var(--spectral-purple), var(--spectral-purple-dark));
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 30px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 20px rgba(123, 44, 191, 0.4);
+}
+
+.forge-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 25px rgba(123, 44, 191, 0.6);
+}
+
+.forge-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.forge-button.secondary {
+    background: transparent;
+    border: 2px solid var(--spectral-purple);
+}
+
+/* Progress Section */
+.progress-section {
+    margin-top: 30px;
+}
+
+.progress-bar {
+    background: rgba(123, 44, 191, 0.2);
+    border-radius: 10px;
+    height: 30px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.progress-fill {
+    background: linear-gradient(90deg, var(--spectral-purple), var(--spectral-neon));
+    height: 100%;
+    width: 0%;
+    transition: width 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+}
+
+.progress-text {
+    text-align: center;
+    color: var(--spectral-neon);
+}
+
+/* Status Section */
+.status-section {
+    padding: 40px 20px;
+}
+
+.status-card {
+    background: var(--dark-card);
+    border: 2px solid var(--spectral-purple-dark);
+    border-radius: 15px;
+    padding: 30px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.job-status {
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.status-pending { color: var(--warning); }
+.status-processing { color: var(--spectral-neon); }
+.status-completed { color: var(--success); }
+.status-failed { color: var(--error); }
+
+/* Dashboard */
+.dashboard-section {
+    padding: 40px 20px;
+    min-height: calc(100vh - 200px);
+}
+
+.user-info {
+    background: var(--dark-card);
+    border: 1px solid var(--spectral-purple);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.jobs-list {
+    display: grid;
+    gap: 20px;
+}
+
+.job-card {
+    background: var(--dark-card);
+    border: 2px solid var(--spectral-purple-dark);
+    border-radius: 10px;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.job-card:hover {
+    border-color: var(--spectral-purple);
+    transform: translateY(-2px);
+}
+
+.job-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.job-header h3 {
+    color: var(--spectral-neon);
+    font-size: 1.2rem;
+}
+
+.job-details {
+    color: var(--text-secondary);
+}
+
+.job-downloads {
+    margin-top: 15px;
+}
+
+.download-btn {
+    display: inline-block;
+    background: var(--spectral-purple);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.download-btn:hover {
+    background: var(--spectral-purple-dark);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-secondary);
+}
+
+.empty-state a {
+    color: var(--spectral-neon);
+    text-decoration: none;
+}
+
+/* Contributors Page */
+.contributors-section {
+    padding: 40px 20px;
+    min-height: calc(100vh - 200px);
+}
+
+.lore-text {
+    background: var(--dark-card);
+    border-left: 4px solid var(--spectral-purple);
+    padding: 20px;
+    margin: 30px 0;
+    font-style: italic;
+    color: var(--text-secondary);
+}
+
+.contributors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin: 40px 0;
+}
+
+.contributor-card {
+    background: var(--dark-card);
+    border: 2px solid var(--spectral-purple-dark);
+    border-radius: 10px;
+    padding: 30px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.contributor-card:hover {
+    border-color: var(--spectral-purple);
+    transform: translateY(-5px);
+}
+
+.contributor-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+.contributor-role {
+    color: var(--spectral-neon);
+    font-size: 0.9rem;
+    margin: 10px 0;
+}
+
+.contributor-desc {
+    color: var(--text-secondary);
+    margin: 15px 0;
+}
+
+.contributor-link {
+    color: var(--spectral-pink);
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.contributor-link:hover {
+    color: var(--spectral-neon);
+}
+
+.contribute-section {
+    background: var(--dark-card);
+    border: 2px solid var(--spectral-purple);
+    border-radius: 15px;
+    padding: 40px;
+    text-align: center;
+    margin: 40px 0;
+}
+
+.contribute-links {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.contribute-links .forge-button {
+    width: auto;
+    margin: 0;
+}
+
+.acknowledgments {
+    margin: 40px 0;
+    text-align: center;
+}
+
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.tool-item {
+    background: rgba(123, 44, 191, 0.1);
+    border: 1px solid var(--spectral-purple-dark);
+    border-radius: 8px;
+    padding: 15px;
+    color: var(--spectral-pink);
+}
+
+/* Footer */
+.forge-footer {
+    background: var(--dark-card);
+    border-top: 2px solid var(--spectral-purple);
+    padding: 30px 20px;
+    text-align: center;
+    margin-top: 60px;
+}
+
+.footer-link {
+    color: var(--spectral-neon);
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.footer-link:hover {
+    color: var(--spectral-pink);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .forge-header .container {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .format-options,
+    .effects-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .contributors-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .contribute-links {
+        flex-direction: column;
+    }
+    
+    .contribute-links .forge-button {
+        width: 100%;
+    }
+}
